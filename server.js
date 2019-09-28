@@ -7,8 +7,18 @@ const path = require('path');
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
 const posts = require('./routes/api/posts');
+const files = require('./routes/api/files');
 
 const app = express();
+
+/** Seting up server to accept cross-origin browser requests */
+app.use(function(req, res, next) { //allow cross origin requests
+    res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Credentials", true);
+    next();
+});
 
 // Body parser middleware
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -33,6 +43,8 @@ require('./config/passport')(passport);
 app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/posts', posts);
+// GridFS (file uplaods support) API endpoints
+app.use('/api/files', files);
 
 // Server static assets if in production
 if (process.env.NODE_ENV === 'production') {
