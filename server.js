@@ -7,6 +7,7 @@ const path = require('path');
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
 const posts = require('./routes/api/posts');
+const files = require('./routes/api/files')
 
 const app = express();
 
@@ -33,6 +34,8 @@ require('./config/passport')(passport);
 app.use('/api/users', users);
 app.use('/api/profile', profile);
 app.use('/api/posts', posts);
+// GridFS (file uplaods support) API endpoints
+app.use('/api/files', files);
 
 // Server static assets if in production
 if (process.env.NODE_ENV === 'production') {
