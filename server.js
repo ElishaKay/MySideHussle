@@ -7,7 +7,7 @@ const path = require('path');
 const users = require('./routes/api/users');
 const profile = require('./routes/api/profile');
 const posts = require('./routes/api/posts');
-const files = require('./routes/api/files')
+const files = require('./routes/api/files');
 
 const app = express();
 

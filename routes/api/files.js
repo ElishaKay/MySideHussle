@@ -1,19 +1,50 @@
 const express = require('express');
 const router = require('express').Router();
 const multer  = require('multer');
-const { mongo, connection } = require('mongoose');
+const mongoose = require('mongoose');
+const {connect, mongo,createConnection,connection} = mongoose;
+const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
-Grid.mongo = mongo;
-var gfs = Grid(connection.db);
+
+// DB Config
+const mongoURI = require('../../config/keys').mongoURI;
+
+// Create mongo connection
+const conn =  mongoose.createConnection(mongoURI);
+
+// Init gfs
+let gfs;
+
+conn.once('open', () => {
+  // Init stream
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection('uploads');
+});
+
+
+
+console.log('connection.db',connection.db)
+// var gfs = new Gridfs(db, mongoDriver);       
 
 // set up connection to db for file storage
-const storage = require('multer-gridfs-storage')({
-   db: connection.db,
-   file: (req, file) => {
-      return {
-         filename: file.originalname
-      }
-   }
+// Create storage engine
+const storage = new GridFsStorage({
+  url: mongoURI,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString('hex') + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: 'uploads'
+        };
+        resolve(fileInfo);
+      });
+    });
+  }
 });
 // sets file input to single file
 const singleUpload = multer({ storage: storage }).single('file');
