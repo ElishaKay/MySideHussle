@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const {connect, mongo,createConnection,connection} = mongoose;
 const GridFsStorage = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
+const crypto = require('crypto');
+const path = require('path');
 
 // DB Config
 const mongoURI = require('../../config/keys').mongoURI;

@@ -17,6 +17,7 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "concurrently": "^3.5.1",
+    "crypto": "^1.0.1",
     "express": "^4.16.3",
     "gravatar": "^1.6.0",
     "gridfs-stream": "^1.1.1",
