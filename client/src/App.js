@@ -25,6 +25,7 @@ import Profile from './components/profile/Profile';
 import Posts from './components/posts/Posts';
 import Post from './components/post/Post';
 import NotFound from './components/not-found/NotFound';
+import FileUpload from './components/file-upload/FileUpload';
 
 import './App.css';
 
@@ -64,6 +65,13 @@ class App extends Component {
               <Route exact path="/profile/:handle" component={Profile} />
               <Switch>
                 <PrivateRoute exact path="/dashboard" component={Dashboard} />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path="/file-upload"
+                  component={FileUpload}
+                />
               </Switch>
               <Switch>
                 <PrivateRoute

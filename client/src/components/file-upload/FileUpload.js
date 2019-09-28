@@ -55,7 +55,7 @@ class FileUpload extends Component {
     let data = new FormData();
     data.append('file', this.state.file);
 
-    fetch('/api/files', {
+    fetch('http://localhost:5000/api/files', {
       method: 'POST',
       body: data
     }).then(res => res.json())
@@ -73,7 +73,7 @@ class FileUpload extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <div className="App-content">

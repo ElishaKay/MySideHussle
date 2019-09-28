@@ -21,9 +21,9 @@ conn.once('open', () => {
   gfs.collection('uploads');
 });
 
+console.log('connection.db',connection.db);
 
 
-console.log('connection.db',connection.db)
 // var gfs = new Gridfs(db, mongoDriver);       
 
 // set up connection to db for file storage
@@ -50,7 +50,7 @@ const storage = new GridFsStorage({
 const singleUpload = multer({ storage: storage }).single('file');
 
 
-router.get('/files/:filename', (req, res) => {
+router.get('/:filename', (req, res) => {
    gfs.files.find({ filename: req.params.filename }).toArray((err, files) => {
       if(!files || files.length === 0){
          return res.status(404).json({
@@ -66,7 +66,7 @@ router.get('/files/:filename', (req, res) => {
    });
 });
 
-router.get('/files', (req, res) => {
+router.get('/', (req, res) => {
    gfs.files.find().toArray((err, files) => {
       if(!files || files.length === 0){
          return res.status(404).json({
@@ -77,7 +77,9 @@ router.get('/files', (req, res) => {
    });
 });
 
-router.post('/files', singleUpload, (req, res) => {
+router.post('/', singleUpload, (req, res) => {
+   console.log('called file upload method');
+
    if (req.file) {
       return res.json({
          success: true,
@@ -87,7 +89,7 @@ router.post('/files', singleUpload, (req, res) => {
     res.send({ success: false });
 });
 
-router.delete('/files/:id', (req, res) => {
+router.delete('/:id', (req, res) => {
    gfs.remove({ _id: req.params.id }, (err) => {
       if (err) return res.status(500).json({ success: false })
       return res.json({ success: true });
