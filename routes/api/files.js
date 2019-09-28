@@ -23,10 +23,7 @@ conn.once('open', () => {
   gfs.collection('uploads');
 });
 
-console.log('connection.db',connection.db);
-
-
-// var gfs = new Gridfs(db, mongoDriver);       
+console.log('connection.db',connection.db);   
 
 // set up connection to db for file storage
 // Create storage engine
