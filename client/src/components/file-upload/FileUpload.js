@@ -55,7 +55,7 @@ class FileUpload extends Component {
     let data = new FormData();
     data.append('file', this.state.file);
 
-    fetch('http://localhost:5000/api/files', {
+    fetch('/api/files', {
       method: 'POST',
       body: data
     }).then(res => res.json())
@@ -93,7 +93,7 @@ class FileUpload extends Component {
                 var d = new Date(file.uploadDate);
                 return (
                   <tr key={index}>
-                    <td><a href={`http://localhost:3001/api/files/${file.filename}`}>{file.filename}</a></td>
+                    <td><a href={`http://localhost:5000/api/files/${file.filename}`}>{file.filename}</a></td>
                     <td>{`${d.toLocaleDateString()} ${d.toLocaleTimeString()}`}</td>
                     <td>{(Math.round(file.length/100) / 10)+'KB'}</td>
                     <td><button onClick={this.deleteFile.bind(this)} id={file._id}>Remove</button></td>
