@@ -19,7 +19,7 @@ class Navbar extends Component {
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link className="nav-link" to="/feed">
-            Post Feed
+            The Hussle Feed
           </Link>
         </li>
         <li className="nav-item">
@@ -81,7 +81,7 @@ class Navbar extends Component {
               <li className="nav-item">
                 <Link className="nav-link" to="/profiles">
                   {' '}
-                  Developers
+                  Husslers
                 </Link>
               </li>
             </ul>
