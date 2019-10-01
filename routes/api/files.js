@@ -89,7 +89,8 @@ router.post('/', singleUpload, (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-   gfs.remove({ _id: req.params.id }, (err) => {
+   console.log('req.params.id: ',req.params.id);
+   gfs.remove({ _id: req.params.id, root: 'uploads' }, (err) => {
       if (err) return res.status(500).json({ success: false })
       return res.json({ success: true });
    })
