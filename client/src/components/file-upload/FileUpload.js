@@ -90,10 +90,12 @@ class FileUpload extends Component {
             </thead>
             <tbody>
               {files.map((file, index) => {
+                console.log('loaded this div');
+                console.log('file: ',file);
                 var d = new Date(file.uploadDate);
                 return (
                   <tr key={index}>
-                    <td><a href={`http://localhost:5000/api/files/${file.filename}`}>{file.filename}</a></td>
+                    <td><a href={`http://localhost:5000/api/files/${file.filename}`}><img src={`http://localhost:5000/api/files/${file.filename}`}/></a></td>
                     <td>{`${d.toLocaleDateString()} ${d.toLocaleTimeString()}`}</td>
                     <td>{(Math.round(file.length/100) / 10)+'KB'}</td>
                     <td><button onClick={this.deleteFile.bind(this)} id={file._id}>Remove</button></td>
