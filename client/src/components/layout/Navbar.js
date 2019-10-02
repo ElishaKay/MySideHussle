@@ -14,6 +14,7 @@ class Navbar extends Component {
 
   render() {
     const { isAuthenticated, user } = this.props.auth;
+    console.log('user in navbar:',user);
 
     const authLinks = (
       <ul className="navbar-nav ml-auto">
@@ -35,7 +36,7 @@ class Navbar extends Component {
           >
             <img
               className="rounded-circle"
-              src={user.avatar}
+              src='http://localhost:5000/api/files/034eee6c00b42e89cb92014c3cacd6d6.ico'
               alt={user.name}
               style={{ width: '25px', marginRight: '5px' }}
               title="You must have a Gravatar connected to your email to display an image"
