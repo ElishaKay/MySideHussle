@@ -51,6 +51,15 @@ const Profile = require('../../models/Profile');
          let linkedin = linkedin_url;
          let twitter = twitter_url;
          let status = headline;
+         let bio = headline;
+
+         if(current_positions && at_current_companies){
+            current_positions = current_positions.split('|');
+            at_current_companies = at_current_companies.split('|') 
+
+         }
+
+         let company = at_current_companies[0];
 
          let handle = linkedin.split('linkedin.com/in/')[1];
 
@@ -165,11 +174,6 @@ const Profile = require('../../models/Profile');
                                   });
                                   new Profile(profileFields).save().then(profile => {
 
-
-                                    if(current_positions && at_current_companies){
-                                        current_positions = current_positions.split('|');
-                                        at_current_companies = at_current_companies.split('|') 
-
                                         for (let i = 0; i < current_positions.length; i++) {
                                             
                                             console.log(current_positions[i].trim() + ' at ' + at_current_companies[i].trim());
@@ -183,7 +187,6 @@ const Profile = require('../../models/Profile');
                                               profile.experience.unshift(newExp);
 
                                         }
-                                     }
                                       
                                      profile.save().then(
                                         profile => {console.log('relevant experience saved')}
@@ -208,11 +211,6 @@ const Profile = require('../../models/Profile');
                                     )
                                     .then(profile => {
 
-
-                                    if(current_positions && at_current_companies){
-                                        current_positions = current_positions.split('|');
-                                        at_current_companies = at_current_companies.split('|') 
-
                                         for (let i = 0; i < current_positions.length; i++) {
                                             
                                             console.log(current_positions[i].trim() + ' at ' + at_current_companies[i].trim());
@@ -226,7 +224,6 @@ const Profile = require('../../models/Profile');
                                               profile.experience.unshift(newExp);
 
                                         }
-                                     }
                                       
                                      profile.save().then(
                                         profile => {console.log('relevant experience saved')}
