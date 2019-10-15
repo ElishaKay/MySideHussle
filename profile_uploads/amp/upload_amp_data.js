@@ -49,7 +49,7 @@ const User = require('../../models/User');
                   console.log('Email already exists');
                   
                 } else {
-                  const avatar = gravatar.url(req.body.email, {
+                  const avatar = gravatar.url(email, {
                     s: '200', // Size
                     r: 'pg', // Rating
                     d: 'mm' // Default
