@@ -2,25 +2,52 @@
 // Within the callback, create a profile (using the user.id)
 
 
-let fs = require('fs');
-let csv = require('fast-csv');
+const fs = require('fs');
+const csv = require('fast-csv');
+const gravatar = require('gravatar');
+
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
+
+// DB Config
+const db = require('../../config/keys').mongoURI;
+
+// Connect to MongoDB
+mongoose
+  .connect(db, { useNewUrlParser: true }) // Let us remove that nasty deprecation warrning :)
+  .then(() => console.log('MongoDB Connected'))
+  .catch(err => console.log(err));
 
 // Load User model
 const User = require('../../models/User');
 
-
-var stream = fs.createReadStream("../csv/applied.csv");
+// let stream = fs.createReadStream("./csv/applied_v2.csv");
  
-var csvStream = csv()
+// let csvStream = csv
+//     .parseStream(stream, { headers: true })
+
+    fs.createReadStream('./csv/applied_v2.csv')
+    .pipe(csv.parse({ headers: true }))
     .on("data", function(data){
          console.log(data);
-         let email = data[0];
+
+         let { first_name, last_name, email } = data;
+
+         let name = `${first_name + ' ' + last_name}`;
+
+         let password = `${first_name + '_' + last_name + '9376'}`;
          
-             
+         if(email!=null && email.includes("@")){
+
+
             User.findOne({ email: email }).then(user => {
+                console.log('user: ', user)
+
                 if (user) {
-                  errors.email = 'Email already exists';
-                  return res.status(400).json(errors);
+                  console.log('Email already exists');
+                  
                 } else {
                   const avatar = gravatar.url(req.body.email, {
                     s: '200', // Size
@@ -29,10 +56,10 @@ var csvStream = csv()
                   });
 
                   const newUser = new User({
-                    name: req.body.name,
-                    email: req.body.email,
+                    name,
+                    email,
                     avatar,
-                    password: req.body.password
+                    password
                   });
 
                   bcrypt.genSalt(10, (err, salt) => {
@@ -41,14 +68,14 @@ var csvStream = csv()
                       newUser.password = hash;
                       newUser
                         .save()
-                        .then(user => res.json(user))
-                        .catch(err => console.log(err));
+                        .then(user => console.log("user succesfully saved. Heres the user.id:", user.id))
+                        .catch(err => console.log("error: ", err));
                     });
                   });
                 }
             });     
-
-
+         }
+         
 
          })
 
@@ -56,7 +83,7 @@ var csvStream = csv()
          console.log("done");
     });
  
-stream.pipe(csvStream);
+// stream.pipe(csvStream);
 
 function formatCurrencyToInt(amountPaid){
   return parseInt(amountPaid.match(/\d+/)[0], 10);
