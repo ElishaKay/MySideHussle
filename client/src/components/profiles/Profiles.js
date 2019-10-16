@@ -4,21 +4,55 @@ import PropTypes from 'prop-types';
 import Spinner from '../common/Spinner';
 import ProfileItem from './ProfileItem';
 import { getProfiles } from '../../actions/profileActions';
+import { Link } from 'react-router-dom';
 
 class Profiles extends Component {
+  constructor(props) {
+      super(props);
+
+      this.state = {
+          "pager":
+              {"totalItems":150,
+                "currentPage":1,
+                "pageSize":10,
+                "totalPages":15,
+                "startPage":1,
+                "endPage":10,
+                "startIndex":0,
+                "endIndex":9}
+      };
+  }
+
+      // this.handlePagination = this.handlePagination.bind(this);
+
   componentDidMount() {
     this.props.getProfiles();
   }
 
+  // handlePagination(){
+  //   const params = new URLSearchParams(location.search);
+  //   const page = parseInt(params.get('page')) || 1;
+  //   if (page !== this.state.pager.currentPage) {
+  //       fetch(`/api/items?page=${page}`, { method: 'GET' })
+  //           .then(response => response.json())
+  //           .then(({pager, pageOfItems}) => {
+  //               this.setState({ pager, pageOfItems });
+  //           });
+  //   }
+  // }
+
   render() {
-    const { profiles, loading } = this.props.profile;
+    let { profiles, loading } = this.props.profile;
+    const { pager } = this.state;
     let profileItems;
+
+    
 
     if (profiles === null || loading) {
       profileItems = <Spinner />;
     } else {
       if (profiles.length > 0) {
-        profileItems = profiles.map(profile => (
+        profileItems = profiles.slice(pager.startIndex, pager.endIndex + 1).map(profile => (
           <ProfileItem key={profile._id} profile={profile} />
         ));
       } else {
@@ -39,7 +73,35 @@ class Profiles extends Component {
             </div>
           </div>
         </div>
+
+         <div className="card-footer pb-0 pt-3">
+            {pager.pages && pager.pages.length &&
+                <ul className="pagination">
+                    <li className={`page-item first-item ${pager.currentPage === 1 ? 'disabled' : ''}`}>
+                        <Link to={{ search: `?page=1` }} className="page-link">First</Link>
+                    </li>
+                    <li className={`page-item previous-item ${pager.currentPage === 1 ? 'disabled' : ''}`}>
+                        <Link to={{ search: `?page=${pager.currentPage - 1}` }} className="page-link">Previous</Link>
+                    </li>
+                    {pager.pages.map(page =>
+                        <li key={page} className={`page-item number-item ${pager.currentPage === page ? 'active' : ''}`}>
+                            <Link to={{ search: `?page=${page}` }} className="page-link">{page}</Link>
+                        </li>
+                    )}
+                    <li className={`page-item next-item ${pager.currentPage === pager.totalPages ? 'disabled' : ''}`}>
+                        <Link to={{ search: `?page=${pager.currentPage + 1}` }} className="page-link">Next</Link>
+                    </li>
+                    <li className={`page-item last-item ${pager.currentPage === pager.totalPages ? 'disabled' : ''}`}>
+                        <Link to={{ search: `?page=${pager.totalPages}` }} className="page-link">Last</Link>
+                    </li>
+                </ul>
+            }                    
+        </div>
+
+        // closing div to return
       </div>
+
+     
     );
   }
 }
