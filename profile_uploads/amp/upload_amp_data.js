@@ -11,12 +11,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-let githubusername = '';
-         let youtube = '';
-         let facebook = '';
-         let instagram = '';
-         let website = '';
-
 // DB Config
 const db = require('../../config/keys').mongoURI;
 
@@ -41,8 +35,16 @@ const Profile = require('../../models/Profile');
     .on("data", function(data){
          console.log(data);
 
+         let githubusername = '';
+         let youtube = '';
+         let facebook = '';
+         let instagram = '';
+         let website = '';
+
          let { first_name, last_name, email, linkedin_url, twitter_url, headline, websites, location, current_positions,
-                 at_current_companies, phone } = data;
+                 at_current_companies, phone, message_sent_date } = data;
+
+         let current_experience_date = new Date(message_sent_date);
 
          let name = `${first_name + ' ' + last_name}`;
 
@@ -141,7 +143,8 @@ const Profile = require('../../models/Profile');
                             if (location) profileFields.location = location;
                             if (status) profileFields.status = status;
                             if (bio) profileFields.bio = bio;
-                            if (phone) profileFields.phone = phone; 
+                            if (phone) profileFields.phone = phone;
+                            if (current_experience_date) profileFields.current_experience_date = current_experience_date;
                             if (githubusername) profileFields.githubusername = githubusername;
                             // Skills - Spilt into array
                             if (typeof skills !== 'undefined') {
@@ -168,8 +171,7 @@ const Profile = require('../../models/Profile');
                                     .findOne({ handle: profileFields.handle})
                                     .then(profile => {
                                     if(profile){
-                                      errors.handle = 'handle already exists';
-                                      res.status(400).json(errors);
+                                      console.log('handle already exists');
                                     }
                                   });
                                   new Profile(profileFields).save().then(profile => {
