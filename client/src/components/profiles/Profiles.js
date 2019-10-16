@@ -19,7 +19,19 @@ class Profiles extends Component {
                 "startPage":1,
                 "endPage":10,
                 "startIndex":0,
-                "endIndex":9}
+                "endIndex":9,
+              "pages":[
+                 1,
+                 2,
+                 3,
+                 4,
+                 5,
+                 6,
+                 7,
+                 8,
+                 9,
+                 10
+              ]}
       };
   }
 
@@ -75,7 +87,7 @@ class Profiles extends Component {
         </div>
 
          <div className="card-footer pb-0 pt-3">
-            {pager.pages && pager.pages.length &&
+            {profileItems.length &&
                 <ul className="pagination">
                     <li className={`page-item first-item ${pager.currentPage === 1 ? 'disabled' : ''}`}>
                         <Link to={{ search: `?page=1` }} className="page-link">First</Link>
@@ -84,9 +96,9 @@ class Profiles extends Component {
                         <Link to={{ search: `?page=${pager.currentPage - 1}` }} className="page-link">Previous</Link>
                     </li>
                     {pager.pages.map(page =>
-                        <li key={page} className={`page-item number-item ${pager.currentPage === page ? 'active' : ''}`}>
+                        <center><li key={page} className={`page-item number-item ${pager.currentPage === page ? 'active' : ''}`}>
                             <Link to={{ search: `?page=${page}` }} className="page-link">{page}</Link>
-                        </li>
+                        </li></center>
                     )}
                     <li className={`page-item next-item ${pager.currentPage === pager.totalPages ? 'disabled' : ''}`}>
                         <Link to={{ search: `?page=${pager.currentPage + 1}` }} className="page-link">Next</Link>
@@ -98,7 +110,6 @@ class Profiles extends Component {
             }                    
         </div>
 
-        // closing div to return
       </div>
 
      
