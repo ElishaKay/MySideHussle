@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const passport = require('passport');
+const paginate = require('jw-paginate');
 
 // Load Validation
 const validateProfileInput = require('../../validation/profile');
@@ -44,6 +45,7 @@ router.get(
 // @desc    Get all profiles
 // @access  Public
 router.get('/all', (req, res) => {
+  console.log('requested all profiles');
   const errors = {};
 
   Profile.find()
@@ -54,9 +56,30 @@ router.get('/all', (req, res) => {
         return res.status(404).json(errors);
       }
 
-      res.json(profiles);
+       // get page from query params or default to first page
+    const page = parseInt(req.query.page) || 1;
+
+    console.log('page from new request:', page);
+
+    // get pager object for specified page
+    const pageSize = 10;
+    const pager = paginate(profiles.length, page, pageSize);
+
+    // get page of items from items array
+    const pageOfItems = profiles.slice(pager.startIndex, pager.endIndex + 1);
+
+    console.log('pager from new request:', pager);
+    // console.log('pageOfItems from new request:', pageOfItems);
+    // return pager object and current page of items
+    res.json({ pager, pageOfItems });
+      // res.json(pageOfItems);
     })
-    .catch(err => res.status(404).json({ profile: 'There are no profiles' }));
+    .catch(err =>{
+      console.log('server error: ', err)
+      res.status(404).json({ profile: 'There are no profiles' })
+    });
+     
+      
 });
 
 // @route   GET api/profile/handle/:handle

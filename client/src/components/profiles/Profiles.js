@@ -11,51 +11,38 @@ class Profiles extends Component {
       super(props);
 
       this.state = {
-          "pager":
-              {"totalItems":150,
-                "currentPage":1,
-                "pageSize":10,
-                "totalPages":15,
-                "startPage":1,
-                "endPage":10,
-                "startIndex":0,
-                "endIndex":9,
-              "pages":[
-                 1,
-                 2,
-                 3,
-                 4,
-                 5,
-                 6,
-                 7,
-                 8,
-                 9,
-                 10
-              ]}
+          pager: {},
+          pageOfItems: []
       };
-  }
 
-      // this.handlePagination = this.handlePagination.bind(this);
+      this.handlePagination = this.handlePagination.bind(this);
+  }
 
   componentDidMount() {
     this.props.getProfiles();
   }
 
-  // handlePagination(){
-  //   const params = new URLSearchParams(location.search);
-  //   const page = parseInt(params.get('page')) || 1;
-  //   if (page !== this.state.pager.currentPage) {
-  //       fetch(`/api/items?page=${page}`, { method: 'GET' })
-  //           .then(response => response.json())
-  //           .then(({pager, pageOfItems}) => {
-  //               this.setState({ pager, pageOfItems });
-  //           });
-  //   }
+  // componentDidUpdate(prevProps, prevState) {
+  //   this.handlePagination(prevProps, prevState);
   // }
 
+  handlePagination(){
+    const params = new URLSearchParams(window.location.search);
+    const page = parseInt(params.get('page')) || 1;
+    if (this.props.profile.profiles && this.props.profile.profiles.length>0 && page !== this.state.pager.currentPage) {
+        this.props.getProfiles(page);
+    }
+  }
+
   render() {
-    let { profiles, loading } = this.props.profile;
-    const { pager } = this.state;
+    let { profiles, pager, loading } = this.props.profile;
+
+
+    console.log('profiles: ', profiles);
+
+    console.log('this.props: ', this.props);
+    console.log('this.state: ', this.state);
+    
     let profileItems;
 
     
@@ -64,7 +51,7 @@ class Profiles extends Component {
       profileItems = <Spinner />;
     } else {
       if (profiles.length > 0) {
-        profileItems = profiles.slice(pager.startIndex, pager.endIndex + 1).map(profile => (
+        profileItems = profiles.map(profile => (
           <ProfileItem key={profile._id} profile={profile} />
         ));
       } else {
@@ -88,7 +75,7 @@ class Profiles extends Component {
 
          <div className="card-footer pb-0 pt-3">
             {profileItems.length &&
-                <ul className="pagination">
+                <ul onClick={this.handlePagination} className="pagination">
                     <li className={`page-item first-item ${pager.currentPage === 1 ? 'disabled' : ''}`}>
                         <Link to={{ search: `?page=1` }} className="page-link">First</Link>
                     </li>
