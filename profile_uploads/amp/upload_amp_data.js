@@ -75,8 +75,15 @@ const Profile = require('../../models/Profile');
 
             for (let i = 0; i < websites.length; i++) {
                 let str = websites[i];
+
+
                 if (str.match(/[a-z]/i)) {
                     // console.log('found alphabetic letter');
+                    if(!str.includes('www') || !str.includes('www')){
+                      let prefix = 'https://';
+                      str = prefix.concat(str);
+                    }
+
                     if(str.includes('instagram')){
                         instagram = str;
                     } else if(str.includes('github')){
