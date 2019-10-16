@@ -20,45 +20,45 @@ class Profiles extends Component {
                 "endPage":10,
                 "startIndex":0,
                 "endIndex":9,
-              "pages":[
-                 1,
-                 2,
-                 3,
-                 4,
-                 5,
-                 6,
-                 7,
-                 8,
-                 9,
-                 10
-              ]}
+                "pages":[
+                   1,
+                   2,
+                   3,
+                   4,
+                   5,
+                   6,
+                   7,
+                   8,
+                   9,
+                   10
+                ]}
       };
+    
+      this.handlePagination = this.handlePagination.bind(this);
+
   }
 
-      // this.handlePagination = this.handlePagination.bind(this);
-
+      
   componentDidMount() {
     this.props.getProfiles();
   }
 
-  // handlePagination(){
-  //   const params = new URLSearchParams(location.search);
-  //   const page = parseInt(params.get('page')) || 1;
-  //   if (page !== this.state.pager.currentPage) {
-  //       fetch(`/api/items?page=${page}`, { method: 'GET' })
-  //           .then(response => response.json())
-  //           .then(({pager, pageOfItems}) => {
-  //               this.setState({ pager, pageOfItems });
-  //           });
-  //   }
-  // }
+  handlePagination(){
+    const params = new URLSearchParams(window.location.search);
+    const page = parseInt(params.get('page')) || 1;
+    if (page !== this.state.pager.currentPage) {
+        fetch(`/api/items?page=${page}`, { method: 'GET' })
+            .then(response => response.json())
+            .then(({pager, pageOfItems}) => {
+                this.setState({ pager, pageOfItems });
+            });
+    }
+  }
 
   render() {
     let { profiles, loading } = this.props.profile;
     const { pager } = this.state;
     let profileItems;
-
-    
 
     if (profiles === null || loading) {
       profileItems = <Spinner />;
@@ -86,8 +86,8 @@ class Profiles extends Component {
           </div>
         </div>
 
-         <div className="card-footer pb-0 pt-3">
-            {profileItems.length &&
+        <div className="card-footer pb-0 pt-3">
+            {pager.pages && pager.pages.length &&
                 <ul className="pagination">
                     <li className={`page-item first-item ${pager.currentPage === 1 ? 'disabled' : ''}`}>
                         <Link to={{ search: `?page=1` }} className="page-link">First</Link>
@@ -96,9 +96,9 @@ class Profiles extends Component {
                         <Link to={{ search: `?page=${pager.currentPage - 1}` }} className="page-link">Previous</Link>
                     </li>
                     {pager.pages.map(page =>
-                        <center><li key={page} className={`page-item number-item ${pager.currentPage === page ? 'active' : ''}`}>
+                        <li key={page} className={`page-item number-item ${pager.currentPage === page ? 'active' : ''}`}>
                             <Link to={{ search: `?page=${page}` }} className="page-link">{page}</Link>
-                        </li></center>
+                        </li>
                     )}
                     <li className={`page-item next-item ${pager.currentPage === pager.totalPages ? 'disabled' : ''}`}>
                         <Link to={{ search: `?page=${pager.currentPage + 1}` }} className="page-link">Next</Link>
@@ -110,9 +110,10 @@ class Profiles extends Component {
             }                    
         </div>
 
+
       </div>
 
-     
+      
     );
   }
 }
