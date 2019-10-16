@@ -11,8 +11,8 @@ class Profiles extends Component {
       super(props);
 
       this.state = {
-            pager: {},
-            pageOfItems: []
+          pager: {},
+          pageOfItems: []
       };
 
       this.handlePagination = this.handlePagination.bind(this);
@@ -22,19 +22,15 @@ class Profiles extends Component {
     this.props.getProfiles();
   }
 
-  componentDidUpdate() {
-    this.handlePagination();
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   this.handlePagination(prevProps, prevState);
+  // }
 
   handlePagination(){
     const params = new URLSearchParams(window.location.search);
     const page = parseInt(params.get('page')) || 1;
-    if (page !== this.state.pager.currentPage) {
-        fetch(`/api/profile/all?page=${page}`, { method: 'GET' })
-            .then(response => response.json())
-            .then(({pager, pageOfItems}) => {
-                this.setState({ pager, pageOfItems });
-            });
+    if (this.props.profile.profiles && this.props.profile.profiles.length>0 && page !== this.state.pager.currentPage) {
+        this.props.getProfiles(page);
     }
   }
 
@@ -79,7 +75,7 @@ class Profiles extends Component {
 
          <div className="card-footer pb-0 pt-3">
             {profileItems.length &&
-                <ul className="pagination">
+                <ul onClick={this.handlePagination} className="pagination">
                     <li className={`page-item first-item ${pager.currentPage === 1 ? 'disabled' : ''}`}>
                         <Link to={{ search: `?page=1` }} className="page-link">First</Link>
                     </li>
