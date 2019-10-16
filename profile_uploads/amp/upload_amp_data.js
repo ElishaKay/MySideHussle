@@ -30,7 +30,7 @@ const Profile = require('../../models/Profile');
 // let csvStream = csv
 //     .parseStream(stream, { headers: true })
 
-    fs.createReadStream('./csv/applied_v4.csv')
+    fs.createReadStream('./csv/applied.csv')
     .pipe(csv.parse({ headers: true }))
     .on("data", function(data){
          console.log(data);
@@ -79,7 +79,7 @@ const Profile = require('../../models/Profile');
 
                 if (str.match(/[a-z]/i)) {
                     // console.log('found alphabetic letter');
-                    if(!str.includes('www') || !str.includes('www')){
+                    if(!str.includes('http')){
                       let prefix = 'https://';
                       str = prefix.concat(str);
                     }
