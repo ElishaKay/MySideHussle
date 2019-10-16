@@ -68,9 +68,11 @@ router.get('/all', (req, res) => {
     // get page of items from items array
     const pageOfItems = profiles.slice(pager.startIndex, pager.endIndex + 1);
 
+    console.log('pager from new request:', pager);
+    // console.log('pageOfItems from new request:', pageOfItems);
     // return pager object and current page of items
-    // res.json({ pager, pageOfItems });
-      res.json(pageOfItems);
+    res.json({ pager, pageOfItems });
+      // res.json(pageOfItems);
     })
     .catch(err =>{
       console.log('server error: ', err)

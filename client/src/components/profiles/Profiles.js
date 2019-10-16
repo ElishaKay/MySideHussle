@@ -11,43 +11,26 @@ class Profiles extends Component {
       super(props);
 
       this.state = {
-          "pager":
-              {"totalItems":150,
-                "currentPage":1,
-                "pageSize":10,
-                "totalPages":15,
-                "startPage":1,
-                "endPage":10,
-                "startIndex":0,
-                "endIndex":9,
-              "pages":[
-                 1,
-                 2,
-                 3,
-                 4,
-                 5,
-                 6,
-                 7,
-                 8,
-                 9,
-                 10
-              ]}
+            pager: {},
+            pageOfItems: []
       };
 
       this.handlePagination = this.handlePagination.bind(this);
   }
 
-      
-
   componentDidMount() {
     this.props.getProfiles();
+  }
+
+  componentDidUpdate() {
+    this.handlePagination();
   }
 
   handlePagination(){
     const params = new URLSearchParams(window.location.search);
     const page = parseInt(params.get('page')) || 1;
     if (page !== this.state.pager.currentPage) {
-        fetch(`/api/items?page=${page}`, { method: 'GET' })
+        fetch(`/api/profile/all?page=${page}`, { method: 'GET' })
             .then(response => response.json())
             .then(({pager, pageOfItems}) => {
                 this.setState({ pager, pageOfItems });
@@ -56,14 +39,14 @@ class Profiles extends Component {
   }
 
   render() {
-    let { profiles, loading } = this.props.profile;
+    let { profiles, pager, loading } = this.props.profile;
 
 
     console.log('profiles: ', profiles);
 
     console.log('this.props: ', this.props);
     console.log('this.state: ', this.state);
-    const { pager } = this.state;
+    
     let profileItems;
 
     
@@ -72,7 +55,7 @@ class Profiles extends Component {
       profileItems = <Spinner />;
     } else {
       if (profiles.length > 0) {
-        profileItems = profiles.slice(pager.startIndex, pager.endIndex + 1).map(profile => (
+        profileItems = profiles.map(profile => (
           <ProfileItem key={profile._id} profile={profile} />
         ));
       } else {
