@@ -238,7 +238,9 @@ const Profile = require('../../models/Profile');
                                         profile => {console.log('relevant experience saved')}
                                     );
                                   
-                                })}
+                                  })
+
+                                }
 
                                 }
                             )

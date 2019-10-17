@@ -124,4 +124,76 @@ router.get(
   }
 );
 
+// @route   POST api/users/reset-password-request
+// @desc    User requests via GUI to reset his/her password
+// @access  Public
+router.get('/reset-password-request', (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  User.findOne({ email: req.body.email }).then(user => {
+    if (user) {
+      errors.email = 'Email already exists';
+      return res.status(400).json(errors);
+    } else {
+      
+      // get the guys name from the db's response and send him a nicely formatted linkdein-style email here
+
+    }
+  });
+
+});
+
+
+// @route   POST api/users/update-password
+// @desc    handles the logic if a user clicks on custom email link to reset his password.
+//          and then fills out form to update his password
+// @access  Public
+router.get('/update-password', (req, res) => {
+  const { errors, isValid } = validateRegisterInput(req.body);
+
+  // Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
+
+  User.findOne({ email: req.body.email }).then(user => {
+    if (user) {
+      errors.email = 'Email already exists';
+      return res.status(400).json(errors);
+    } else {
+      
+      //Update password within DB
+      User
+        .findOneAndUpdate(
+          {user: user.id},
+          {$set: profileFields},
+          {new: true}
+        )
+        .then(profile => {
+                //save one experience at a time
+                  const newExp = {
+                    title: current_positions[i].trim(),
+                    company: at_current_companies[i].trim()
+                  };
+
+                  // Add to exp array
+                  profile.experience.unshift(newExp);
+         }     
+         profile.save().then(
+            profile => {console.log('relevant experience saved')}
+        );  
+    })
+
+
+    }
+  });
+
+});
+
+
 module.exports = router;
