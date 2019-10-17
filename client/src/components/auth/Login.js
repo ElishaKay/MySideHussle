@@ -6,6 +6,7 @@ import TextFieldGroup from '../common/TextFieldGroup';
 import { Link } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert'; // Import
 import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+import boom from'../../img/boom.jpg';
 
 
 class Login extends Component {
@@ -14,7 +15,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      errors: {}
+      errors: {},
+      resetRequestMade: false
     };
 
     this.resetPassword = this.resetPassword.bind(this);
@@ -51,7 +53,7 @@ class Login extends Component {
             //  deleteBook(id, () => 
             //     close()
             // )
-            console.log('password sent to you')
+            this.setState({ resetRequestMade: true })
         },
         {
           label: 'No'
@@ -78,13 +80,18 @@ class Login extends Component {
   }
 
   render() {
-    const { errors } = this.state;
+    const { errors, resetRequestMade } = this.state;
 
     return (
       <div className="login">
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
+
+              {resetRequestMade ? (
+                <img src={boom} alt="boom"/>
+              ) : (<div>
+                  
               <h1 className="display-4 text-center">Log In</h1>
               <p className="lead text-center">
                 Sign in to your SideHussle account
@@ -112,6 +119,11 @@ class Login extends Component {
               </form>
                <div className="btn btn-info btn-block mt-4" />
                <Link onClick={this.resetPassword} to={{ search: `?reset_password_for=${this.state.email}` }} className="page-link">Reset Password</Link>
+
+               </div>
+              )}
+
+
             </div>
           </div>
         </div>
