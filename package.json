@@ -29,6 +29,7 @@
     "multer-gridfs-storage": "^3.3.0",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
+    "react-confirm-alert": "^2.4.1",
     "validator": "^9.4.1"
   },
   "devDependencies": {

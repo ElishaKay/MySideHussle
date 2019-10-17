@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { loginUser } from '../../actions/authActions';
 import TextFieldGroup from '../common/TextFieldGroup';
+import { Link } from 'react-router-dom';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css' // Import css
+
 
 class Login extends Component {
   constructor() {
@@ -12,6 +16,8 @@ class Login extends Component {
       password: '',
       errors: {}
     };
+
+    this.resetPassword = this.resetPassword.bind(this);
   }
 
   componentDidMount() {
@@ -30,6 +36,30 @@ class Login extends Component {
     }
   }
 
+  resetPassword(){
+    console.log('this.state: ',this.state);
+
+    let message = 'Are you sure you would like to reset your Password? An email will be sent to ' + this.state.email;
+
+    confirmAlert({
+      title: 'Reset Password',
+      message: message,
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => 
+            //  deleteBook(id, () => 
+            //     close()
+            // )
+            console.log('password sent to you')
+        },
+        {
+          label: 'No'
+        }
+      ]
+    })
+  }
+
   onSubmit = e => {
     e.preventDefault();
 
@@ -42,6 +72,8 @@ class Login extends Component {
   }
 
   onChange = e => {
+    console.log('onChange function called');
+
     this.setState({ [e.target.name]: e.target.value });
   }
 
@@ -76,7 +108,10 @@ class Login extends Component {
                   error={errors.password}
                 />
                 <input type="submit" className="btn btn-info btn-block mt-4" />
+                
               </form>
+               <div className="btn btn-info btn-block mt-4" />
+               <Link onClick={this.resetPassword} to={{ search: `?page=${1}` }} className="page-link">Reset Password</Link>
             </div>
           </div>
         </div>
