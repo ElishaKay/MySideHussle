@@ -19,7 +19,9 @@ class Profiles extends Component {
   }
 
   componentDidMount() {
-    this.props.getProfiles();
+    const params = new URLSearchParams(window.location.search);
+    const page = parseInt(params.get('page')) || 1;
+    this.props.getProfiles(page);
   }
 
   // componentDidUpdate(prevProps, prevState) {
@@ -44,8 +46,6 @@ class Profiles extends Component {
     console.log('this.state: ', this.state);
     
     let profileItems;
-
-    
 
     if (profiles === null || loading) {
       profileItems = <Spinner />;
