@@ -41,7 +41,7 @@ class Login extends Component {
   resetPassword(){
     console.log('this.state: ',this.state);
 
-    let message = 'Are you sure you would like to reset your password? An email will be sent to ' + this.state.email;
+    let message = 'Are you sure you would like to reset your password? An email will be sent to ' + this.state.email; 
 
     confirmAlert({
       title: 'Reset Password',
