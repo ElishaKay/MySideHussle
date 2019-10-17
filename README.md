@@ -32,16 +32,7 @@ module.exports = {
 };
 ```
 
-## App Info
-
-### Author
-
-Brad Traversy
-[Traversy Media](http://www.traversymedia.com)
-
-### Version
-
-1.0.0
+https://jasonwatmore.com/post/2019/07/18/react-node-server-side-pagination-tutorial-example
 
 ### License
 
