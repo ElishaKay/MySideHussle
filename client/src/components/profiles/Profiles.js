@@ -24,10 +24,6 @@ class Profiles extends Component {
     this.props.getProfiles(page);
   }
 
-  // componentDidUpdate(prevProps, prevState) {
-  //   this.handlePagination(prevProps, prevState);
-  // }
-
   handlePagination(){
     const params = new URLSearchParams(window.location.search);
     const page = parseInt(params.get('page')) || 1;
