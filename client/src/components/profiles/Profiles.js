@@ -10,11 +10,6 @@ class Profiles extends Component {
   constructor(props) {
       super(props);
 
-      this.state = {
-          pager: {},
-          pageOfItems: []
-      };
-
       this.handlePagination = this.handlePagination.bind(this);
   }
 
@@ -27,7 +22,7 @@ class Profiles extends Component {
   handlePagination(){
     const params = new URLSearchParams(window.location.search);
     const page = parseInt(params.get('page')) || 1;
-    if (this.props.profile.profiles && this.props.profile.profiles.length>0 && page !== this.state.pager.currentPage) {
+    if (page !== this.props.profile.pager.currentPage) {
         this.props.getProfiles(page);
     }
   }
@@ -35,12 +30,6 @@ class Profiles extends Component {
   render() {
     let { profiles, pager, loading } = this.props.profile;
 
-
-    console.log('profiles: ', profiles);
-
-    console.log('this.props: ', this.props);
-    console.log('this.state: ', this.state);
-    
     let profileItems;
 
     if (profiles === null || loading) {
