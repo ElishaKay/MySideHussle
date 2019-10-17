@@ -111,7 +111,7 @@ class Login extends Component {
                 
               </form>
                <div className="btn btn-info btn-block mt-4" />
-               <Link onClick={this.resetPassword} to={{ search: `?page=${1}` }} className="page-link">Reset Password</Link>
+               <Link onClick={this.resetPassword} to={{ search: `?reset_password_for=${this.state.email}` }} className="page-link">Reset Password</Link>
             </div>
           </div>
         </div>
