@@ -48,13 +48,20 @@ router.get('/all', (req, res) => {
   console.log('requested all profiles');
   const errors = {};
 
-  Profile.find()
-    .populate('user', ['name', 'avatar'])
-    .then(profiles => {
-      if (!profiles) {
-        errors.noprofile = 'There are no profiles';
-        return res.status(404).json(errors);
-      }
+//   Profile.aggregate([
+// { $match : {"name": "theguy"}},
+// { $skip : index-1},
+// { $limit : 1 }
+// ]);
+  
+
+   
+
+  // Profile.aggregate([
+  //   { $sort : {'date': -1}},
+  //   { $limit : 20 }
+  //   ]).
+  //   exec( 
 
        // get page from query params or default to first page
     const page = parseInt(req.query.page) || 1;
@@ -63,12 +70,32 @@ router.get('/all', (req, res) => {
 
     // get pager object for specified page
     const pageSize = 10;
-    const pager = paginate(profiles.length, page, pageSize);
 
-    // get page of items from items array
-    const pageOfItems = profiles.slice(pager.startIndex, pager.endIndex + 1);
+    const pager = paginate(1000, page, pageSize);
 
     console.log('pager from new request:', pager);
+
+    console.log('pager.startIndex from new request:', pager.startIndex);
+
+    Profile.find().sort({'date': -1}).skip(pager.startIndex).limit(20)
+    .populate('user', ['name', 'avatar'])
+    .then(profiles => {
+      console.log('here are the profiles', profiles);
+      
+      if (!profiles) {
+        errors.noprofile = 'There are no profiles';
+        return res.status(404).json(errors);
+      }
+
+    // const pager = paginate(profiles.length, page, pageSize);
+
+    
+
+    // get page of items from items array
+    // const pageOfItems = profiles.slice(pager.startIndex, pager.endIndex + 1);
+
+    const pageOfItems = profiles;
+
     // console.log('pageOfItems from new request:', pageOfItems);
     // return pager object and current page of items
     res.json({ pager, pageOfItems });
