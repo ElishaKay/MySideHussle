@@ -48,7 +48,7 @@ router.get('/all', (req, res) => {
   console.log('requested all profiles');
   const errors = {};
 
-  Profile.find().limit(500).
+  Profile.find().
     .populate('user', ['name', 'avatar'])
     .then(profiles => {
       if (!profiles) {
