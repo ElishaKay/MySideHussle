@@ -41,7 +41,7 @@ class Login extends Component {
   resetPassword(){
     console.log('this.state: ',this.state);
 
-    let message = 'Are you sure you would like to reset your Password? An email will be sent to ' + this.state.email;
+    let message = 'Are you sure you would like to reset your password? An email will be sent to ' + this.state.email;
 
     confirmAlert({
       title: 'Reset Password',
@@ -50,9 +50,6 @@ class Login extends Component {
         {
           label: 'Yes',
           onClick: () => 
-            //  deleteBook(id, () => 
-            //     close()
-            // )
             this.setState({ resetRequestMade: true })
         },
         {
@@ -89,7 +86,14 @@ class Login extends Component {
             <div className="col-md-8 m-auto">
 
               {resetRequestMade ? (
-                <img src={boom} alt="boom"/>
+                <div>
+                  <img src={boom} alt="boom"/>
+
+                  <h1 className="display-4 text-center">You've done it!</h1>
+                  <p className="lead text-center">
+                    A link to reset your password has been sent to {this.state.email}
+                  </p>
+                </div>
               ) : (<div>
                   
               <h1 className="display-4 text-center">Log In</h1>
@@ -117,8 +121,12 @@ class Login extends Component {
                 <input type="submit" className="btn btn-info btn-block mt-4" />
                 
               </form>
-               <div className="btn btn-info btn-block mt-4" />
-               <Link onClick={this.resetPassword} to={{ search: `?reset_password_for=${this.state.email}` }} className="page-link">Reset Password</Link>
+
+              {!errors.password ? null : (
+                 <div className="btn btn-info btn-block mt-4" > 
+                    <Link onClick={this.resetPassword} to={{ search: `?reset_password_for=${this.state.email}` }} className="page-link">Reset Password</Link>
+                 </div>
+               )}
 
                </div>
               )}
