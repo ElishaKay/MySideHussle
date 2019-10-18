@@ -144,48 +144,53 @@ router.post('/send-password-link', (req, res) => {
       console.log('user coming back from db call:',user);
 
       res.json({success: true})
+    
+      // get the guys name from the db's response and send him a nicely formatted linkdein-style email here
+
+        let {name, email} = user;
+        let subject = 'heyo';
+        let message = 'whadup';
+
+        function sendGrid(sendTo){
+            var helper = require('sendgrid').mail;
+            var from = new helper.Email('support@ampitup.io');
+            var to = new helper.Email(sendTo);
+            var emailTitle = 'got your message. cool';
+            var emailTemplate = require('../../emails/email_template.js')(
+                name,
+                subject,
+                message
+                );
+
+            console.log('')
+            var content = new helper.Content(
+                    "text/html", emailTemplate);
+            var mail = new helper.Mail(from, emailTitle, to, content);
+
+            var request = sg.emptyRequest({
+              method: 'POST',
+              path: '/v3/mail/send',
+              body: mail.toJSON(),
+            });
+
+            sg.API(request, function(error, response) {
+              console.log('response from sendGrid:', response);
+            });
+        }
+
+        //send to client
+        sendGrid(email);
+
+        //send to admin
+        sendGrid('kramer1346@gmail.com');        
+      
+
     } else {
 
       errors.email = 'Email already exists';
       return res.status(400).json(errors);
       
-      // get the guys name from the db's response and send him a nicely formatted linkdein-style email here
-
-        // let {name, email, subject, message} = req.body;
-
-        // function sendGrid(sendTo){
-        //     var helper = require('sendgrid').mail;
-        //     var from = new helper.Email('support@ampitup.io');
-        //     var to = new helper.Email(sendTo);
-        //     var emailTitle = 'got your message. cool';
-        //     var emailTemplate = require('../../emails/email_template.js')(
-        //         name,
-        //         subject,
-        //         message
-        //         );
-
-        //     console.log('')
-        //     var content = new helper.Content(
-        //             "text/html", emailTemplate);
-        //     var mail = new helper.Mail(from, emailTitle, to, content);
-
-        //     var request = sg.emptyRequest({
-        //       method: 'POST',
-        //       path: '/v3/mail/send',
-        //       body: mail.toJSON(),
-        //     });
-
-        //     sg.API(request, function(error, response) {
-        //       console.log('response from sendGrid:', sengrid);
-        //     });
-        // }
-
-        // //send to client
-        // sendGrid(email);
-
-        // //send to admin
-        // sendGrid('kramer1346@gmail.com');        
-        
+      
     }
   });
 
