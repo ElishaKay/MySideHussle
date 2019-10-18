@@ -42,12 +42,21 @@ export const loginUser = userData => dispatch => {
 };
 
 // Send reset password link via email
-export const sendPasswordLink = decoded => {
-  return {
-    type: SET_CURRENT_USER,
-    payload: decoded
-  };
+export const sendPasswordLink = (userData, history) => dispatch => {
+  axios
+    .post('/api/users/send-password-link', userData)
+    .then(res => 
+      console.log(res)
+    )
+    .catch(err =>
+      dispatch({
+        type: GET_ERRORS,
+        payload: err.response.data
+      })
+    );
 };
+
+
 
 // Set logged in user
 export const setCurrentUser = decoded => {

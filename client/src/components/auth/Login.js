@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { loginUser } from '../../actions/authActions';
+import { loginUser, sendPasswordLink } from '../../actions/authActions';
 import TextFieldGroup from '../common/TextFieldGroup';
 import { Link } from 'react-router-dom';
 import { confirmAlert } from 'react-confirm-alert'; // Import
@@ -20,6 +20,7 @@ class Login extends Component {
     };
 
     this.resetPassword = this.resetPassword.bind(this);
+    this.sendPasswordLink = this.sendPasswordLink.bind(this);
   }
 
   componentDidMount() {
@@ -38,19 +39,29 @@ class Login extends Component {
     }
   }
 
+  sendPasswordLink(){
+    const userData = {
+                      email: this.state.email,
+                      password: this.state.password
+                    };
+
+    this.props.sendPasswordLink(userData)
+    this.setState({ resetRequestMade: true })
+
+  }
+
   resetPassword(){
     console.log('this.state: ',this.state);
-
     let message = 'Are you sure you would like to reset your password? An email will be sent to ' + this.state.email; 
-
+    
     confirmAlert({
       title: 'Reset Password',
       message: message,
       buttons: [
         {
           label: 'Yes',
-          onClick: () => 
-            this.setState({ resetRequestMade: true })
+          onClick: () =>
+            this.sendPasswordLink()
         },
         {
           label: 'No'
@@ -88,7 +99,7 @@ class Login extends Component {
               {resetRequestMade ? (
                 <div>
                   <img src={boom} alt="boom"/>
-
+                  <br/>
                   <h1 className="display-4 text-center">You've done it!</h1>
                   <p className="lead text-center">
                     A link to reset your password has been sent to {this.state.email}
@@ -151,4 +162,4 @@ const mapStateToProps = state => ({
   errors: state.errors
 });
 
-export default connect(mapStateToProps, { loginUser })(Login);
+export default connect(mapStateToProps, { loginUser, sendPasswordLink })(Login);

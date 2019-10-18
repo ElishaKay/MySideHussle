@@ -125,23 +125,30 @@ router.get(
   }
 );
 
-// @route   POST api/users/reset-password-request
+// @route   POST api/users/send-password-link
 // @desc    User requests via GUI to reset his/her password
 // @access  Public
-router.get('/reset-password-request', (req, res) => {
-  const { errors, isValid } = validateRegisterInput(req.body);
+router.post('/send-password-link', (req, res) => {
 
-  // Check Validation
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+  console.log('called send-password-link api route')
+  const errors = {};
+  // const { errors, isValid } = validateRegisterInput(req.body);
+
+  // // Check Validation
+  // if (!isValid) {
+  //   return res.status(400).json(errors);
+  // }
 
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {
+      console.log('user coming back from db call:',user);
+
+      res.json({success: true})
+    } else {
+
       errors.email = 'Email already exists';
       return res.status(400).json(errors);
-    } else {
-      console.log('user coming back from db call:',user);
+      
       // get the guys name from the db's response and send him a nicely formatted linkdein-style email here
 
         // let {name, email, subject, message} = req.body;
@@ -151,7 +158,7 @@ router.get('/reset-password-request', (req, res) => {
         //     var from = new helper.Email('support@ampitup.io');
         //     var to = new helper.Email(sendTo);
         //     var emailTitle = 'got your message. cool';
-        //     var emailTemplate = require('../config/email_template.js')(
+        //     var emailTemplate = require('../../emails/email_template.js')(
         //         name,
         //         subject,
         //         message
