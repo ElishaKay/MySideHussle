@@ -41,6 +41,14 @@ export const loginUser = userData => dispatch => {
     );
 };
 
+// Send reset password link via email
+export const sendPasswordLink = decoded => {
+  return {
+    type: SET_CURRENT_USER,
+    payload: decoded
+  };
+};
+
 // Set logged in user
 export const setCurrentUser = decoded => {
   return {

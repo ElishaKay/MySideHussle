@@ -5,6 +5,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
+const sg = require('sendgrid')(keys.SENDGRID_API_KEY);
 
 // Load Input Validation
 const validateRegisterInput = require('../../validation/register');
@@ -140,9 +141,44 @@ router.get('/reset-password-request', (req, res) => {
       errors.email = 'Email already exists';
       return res.status(400).json(errors);
     } else {
-      
+      console.log('user coming back from db call:',user);
       // get the guys name from the db's response and send him a nicely formatted linkdein-style email here
 
+        // let {name, email, subject, message} = req.body;
+
+        // function sendGrid(sendTo){
+        //     var helper = require('sendgrid').mail;
+        //     var from = new helper.Email('support@ampitup.io');
+        //     var to = new helper.Email(sendTo);
+        //     var emailTitle = 'got your message. cool';
+        //     var emailTemplate = require('../config/email_template.js')(
+        //         name,
+        //         subject,
+        //         message
+        //         );
+
+        //     console.log('')
+        //     var content = new helper.Content(
+        //             "text/html", emailTemplate);
+        //     var mail = new helper.Mail(from, emailTitle, to, content);
+
+        //     var request = sg.emptyRequest({
+        //       method: 'POST',
+        //       path: '/v3/mail/send',
+        //       body: mail.toJSON(),
+        //     });
+
+        //     sg.API(request, function(error, response) {
+        //       console.log('response from sendGrid:', sengrid);
+        //     });
+        // }
+
+        // //send to client
+        // sendGrid(email);
+
+        // //send to admin
+        // sendGrid('kramer1346@gmail.com');        
+        
     }
   });
 
@@ -183,17 +219,14 @@ router.get('/update-password', (req, res) => {
 
                   // Add to exp array
                   profile.experience.unshift(newExp);
-         }     
+         })     
          profile.save().then(
             profile => {console.log('relevant experience saved')}
         );  
-    })
+      
+      }})}); 
 
 
-    }
-  });
-
-});
 
 
 module.exports = router;
