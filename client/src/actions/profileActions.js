@@ -135,8 +135,8 @@ export const getProfiles = (page) => dispatch => {
     )
     .catch(err =>
       dispatch({
-        type: GET_PROFILES,
-        payload: null
+        type: GET_ERRORS,
+        payload: err.response.data
       })
     );
 };

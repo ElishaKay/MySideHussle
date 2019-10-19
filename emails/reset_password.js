@@ -1,5 +1,5 @@
 module.exports =
-function(name) {
+function(name, uuid, baseURL) {
   return (
  `
 <html>
@@ -78,8 +78,8 @@ function(name) {
             <table border="0" cellpadding="0" cellspacing="0" width="480" >
                 <tr>
                     <td align="center" valign="top" style="padding: 40px 10px 40px 10px;">
-                        <a href="http://litmus.com" target="_blank">
-                            <img alt="Logo" src="https://lh6.googleusercontent.com/lABCqM2FZaCiqGyU4oDGd75gtaSXt1XL346scVwFFroj2WvjNeH3jrriZW9K23H6fyX0rG49SWwPYw=w1920-h969" width="100" height="100" style="display: block;  font-family: 'Lato', Helvetica, Arial, sans-serif; color: #ffffff; font-size: 18px;" border="0">
+                        <a href="${baseURL}/api/users/update-password?uuid=${uuid}" target="_blank">
+                            <img alt="Logo" src="${baseURL}/img/hussler.png" width="100" height="100" style="display: block;  font-family: 'Lato', Helvetica, Arial, sans-serif; color: #ffffff; font-size: 18px;" border="0">
                         </a>
                     </td>
                 </tr>
@@ -116,7 +116,7 @@ function(name) {
                       <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
                         <table border="0" cellspacing="0" cellpadding="0">
                           <tr>
-                              <td align="center" style="border-radius: 3px;" bgcolor="#7c72dc"><a href="https://litmus.com" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #7c72dc; display: inline-block;">Reset Password</a></td>
+                              <td align="center" style="border-radius: 3px;" bgcolor="#7c72dc"><a href="${baseURL}/api/users/update-password?uuid=${uuid}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #7c72dc; display: inline-block;">Reset Password</a></td>
                           </tr>
                         </table>
                       </td>
@@ -146,7 +146,7 @@ function(name) {
                 <!-- COPY -->
                 <tr>
                   <td bgcolor="#111111" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
-                    <p style="margin: 0;"><a href="http://litmus.com" target="_blank" style="color: #7c72dc;">See how easy it is to get started</a></p>
+                    <p style="margin: 0;"><a href="${baseURL}/api/users/update-password?uuid=${uuid}" target="_blank" style="color: #7c72dc;">See how easy it is to get started</a></p>
                   </td>
                 </tr>
             </table>
@@ -160,7 +160,7 @@ function(name) {
                 <tr>
                   <td bgcolor="#C6C2ED" align="center" style="padding: 30px 30px 30px 30px; border-radius: 4px 4px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
                     <h2 style="font-size: 20px; font-weight: 400; color: #111111; margin: 0;">Need more help?</h2>
-                    <p style="margin: 0;"><a href="http://litmus.com" target="_blank" style="color: #7c72dc;">We&rsquo;re here, ready to talk</a></p>
+                    <p style="margin: 0;"><a href="${baseURL}" target="_blank" style="color: #7c72dc;">We&rsquo;re here, ready to talk</a></p>
                   </td>
                 </tr>
             </table>
@@ -174,7 +174,7 @@ function(name) {
               <!-- PERMISSION REMINDER -->
               <tr>
                 <td bgcolor="#f4f4f4" align="left" style="padding: 0px 30px 30px 30px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 400; line-height: 18px;" >
-                  <p style="margin: 0;">You received this email because you requested a password reset. If you did not, <a href="http://litmus.com" target="_blank" style="color: #111111; font-weight: 700;">please contact us.</a>.</p>
+                  <p style="margin: 0;">You received this email because you requested a password reset. If you did not, <a href="${baseURL}" target="_blank" style="color: #111111; font-weight: 700;">please contact us.</a>.</p>
                 </td>
               </tr>
               

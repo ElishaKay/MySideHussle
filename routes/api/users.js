@@ -147,10 +147,12 @@ router.post('/send-password-link', (req, res) => {
     
       // get the guys name from the db's response and send him a nicely formatted linkdein-style email here
 
-        let {name, email} = user;
-        name = name.split(' ')[0];
+        let {name, email, password} = user;
+        name = name.split(' ')[0]; 
         let subject = 'heyo';
         let message = 'whadup';
+        let uuid = password;
+        let baseURL = 'https://mysidehussle.herokuapp.com';
 
         function sendGrid(sendTo){
             var helper = require('sendgrid').mail;
@@ -158,7 +160,9 @@ router.post('/send-password-link', (req, res) => {
             var to = new helper.Email(sendTo);
             var emailTitle = `${name} 🤗 - attaching your password-reset link here`;
             var emailTemplate = require('../../emails/reset_password.js')(
-                name
+                name,
+                password,
+                baseURL
                 );
 
             console.log('')
@@ -201,12 +205,16 @@ router.post('/send-password-link', (req, res) => {
 //          and then fills out form to update his password
 // @access  Public
 router.get('/update-password', (req, res) => {
-  const { errors, isValid } = validateRegisterInput(req.body);
+  //Check this logic in Traversy tutorial
+  // const { errors, isValid } = validateRegisterInput(req.body);
 
-  // Check Validation
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
+  // // Check Validation
+  // if (!isValid) {
+  //   return res.status(400).json(errors);
+  // }
+
+  // get page from query params or default to first page
+  const userID = parseInt(req.query.uuid) || 1;
 
   User.findOne({ email: req.body.email }).then(user => {
     if (user) {

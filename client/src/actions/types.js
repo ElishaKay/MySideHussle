@@ -1,7 +1,9 @@
 export const GET_ERRORS = 'GET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
+
 export const SEND_PASSWORD_LINK = 'SEND_PASSWORD_LINK';
+export const UPDATE_PASSWORD = 'UPDATE_PASSWORD';
 
 export const GET_PROFILE = 'GET_PROFILE';
 export const PROFILE_LOADING = 'PROFILE_LOADING';
