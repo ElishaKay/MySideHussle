@@ -212,45 +212,48 @@ router.get('/update-password', (req, res) => {
   // if (!isValid) {
   //   return res.status(400).json(errors);
   // }
+
   console.log('ran update password route');
 
   // get password from uuid params or default to first page
   const uuid = req.query.uuid || 'couldnt find uuid';
-  const newPassword = req.query.newPassword || 'couldnt find newPassword';
+  let newPassword = req.query.newPassword || 'couldnt find newPassword';
 
   console.log('uuid',uuid);
   console.log('newPassword',newPassword)
 
   User.findOne({ password: uuid }).then(user => {
     console.log('user:', user)
-
+    
     if (user) {
-      errors.email = 'Email already exists';
-      return res.status(400).json(errors);
-    } else {
       
-      //Update password within DB
-      User
-        .findOneAndUpdate(
-          {user: user.id},
-          {$set: profileFields},
-          {new: true}
-        )
-        .then(profile => {
-                //save one experience at a time
-                  const newExp = {
-                    title: current_positions[i].trim(),
-                    company: at_current_companies[i].trim()
-                  };
+    bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newPassword, salt, (err, hash) => {
+          if (err) throw err;
+          newPassword = hash;
+          let profileFields = {};
+          profileFields.password = newPassword;
 
-                  // Add to exp array
-                  profile.experience.unshift(newExp);
-         })     
-         profile.save().then(
-            profile => {console.log('relevant experience saved')}
-        );  
-      
-}})}); 
+          //Update password within DB
+          User
+            .findOneAndUpdate(
+              {password: uuid},
+              {$set: {password: newPassword}},
+              {new: true, useFindAndModify:false}, (err, user)=> {
+                if(err){
+                  console.log(err);
+                } else {
+                  console.log('successfully updated password for the following user: ', user);
+                  res.json(user)
+                }
+            })
+
+    })})} else {  
+      errors.password = 'Try another password';
+      return res.status(400).json(errors);
+    } 
+
+})}); 
 
 
 
