@@ -78,7 +78,7 @@ function(name, uuid, baseURL) {
             <table border="0" cellpadding="0" cellspacing="0" width="480" >
                 <tr>
                     <td align="center" valign="top" style="padding: 40px 10px 40px 10px;">
-                        <a href="${baseURL}/api/users/update-password?uuid=${uuid}" target="_blank">
+                        <a href="${baseURL}/update-password?uuid=${uuid}" target="_blank">
                             <img alt="Logo" src="${baseURL}/img/hussler.png" width="100" height="100" style="display: block;  font-family: 'Lato', Helvetica, Arial, sans-serif; color: #ffffff; font-size: 18px;" border="0">
                         </a>
                     </td>
@@ -116,7 +116,7 @@ function(name, uuid, baseURL) {
                       <td bgcolor="#ffffff" align="center" style="padding: 20px 30px 60px 30px;">
                         <table border="0" cellspacing="0" cellpadding="0">
                           <tr>
-                              <td align="center" style="border-radius: 3px;" bgcolor="#7c72dc"><a href="${baseURL}/api/users/update-password?uuid=${uuid}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #7c72dc; display: inline-block;">Reset Password</a></td>
+                              <td align="center" style="border-radius: 3px;" bgcolor="#7c72dc"><a href="${baseURL}/update-password?uuid=${uuid}" target="_blank" style="font-size: 20px; font-family: Helvetica, Arial, sans-serif; color: #ffffff; text-decoration: none; color: #ffffff; text-decoration: none; padding: 15px 25px; border-radius: 2px; border: 1px solid #7c72dc; display: inline-block;">Reset Password</a></td>
                           </tr>
                         </table>
                       </td>
@@ -146,7 +146,7 @@ function(name, uuid, baseURL) {
                 <!-- COPY -->
                 <tr>
                   <td bgcolor="#111111" align="left" style="padding: 0px 30px 40px 30px; border-radius: 0px 0px 4px 4px; color: #666666; font-family: 'Lato', Helvetica, Arial, sans-serif; font-size: 18px; font-weight: 400; line-height: 25px;" >
-                    <p style="margin: 0;"><a href="${baseURL}/api/users/update-password?uuid=${uuid}" target="_blank" style="color: #7c72dc;">See how easy it is to get started</a></p>
+                    <p style="margin: 0;"><a href="${baseURL}/update-password?uuid=${uuid}" target="_blank" style="color: #7c72dc;">See how easy it is to get started</a></p>
                   </td>
                 </tr>
             </table>

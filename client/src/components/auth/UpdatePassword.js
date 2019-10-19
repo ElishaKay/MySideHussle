@@ -9,10 +9,9 @@ class UpdatePassword extends Component {
   constructor() {
     super();
     this.state = {
-      name: '',
-      email: '',
       password: '',
       password2: '',
+      uuid: '',
       errors: {}
     };
   }
@@ -20,7 +19,7 @@ class UpdatePassword extends Component {
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
       this.props.history.push('/dashboard');
-    }
+    }  
   }
 
   componentWillReceiveProps(nextProps) {
@@ -35,15 +34,19 @@ class UpdatePassword extends Component {
 
   onSubmit = e => {
     e.preventDefault();
+    console.log('ran onSubmit function')
+    
+    const params = new URLSearchParams(window.location.search);
+    const uuid = params.get('uuid') || 'nouuidfound';
 
-    const newUser = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2
-    };
+    let {password, password2} = this.state;
 
-    this.props.registerUser(newUser, this.props.history);
+    if(password === password2){
+      this.props.updatePassword(password, uuid, this.props.history)      
+    } else{
+      this.setState({errors:{password2:`passwords don't match up 😒`}})
+    }
+
   }
 
   render() {
@@ -54,27 +57,11 @@ class UpdatePassword extends Component {
         <div className="container">
           <div className="row">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Sign Up</h1>
+              <h1 className="display-4 text-center">Update Password</h1>
               <p className="lead text-center">
-                Create your SideHussle account
+                Forgot your SideHussle password, eh? No worries, you can update it below:
               </p>
               <form noValidate onSubmit={this.onSubmit}>
-                <TextFieldGroup
-                  placeholder="Name"
-                  name="name"
-                  value={this.state.name}
-                  onChange={this.onChange}
-                  error={errors.name}
-                />
-                <TextFieldGroup
-                  placeholder="Email"
-                  name="email"
-                  type="email"
-                  value={this.state.email}
-                  onChange={this.onChange}
-                  error={errors.email}
-                  info="This site uses Gravatar so if you want a profile image, use a Gravatar email"
-                />
                 <TextFieldGroup
                   placeholder="Password"
                   name="password"
@@ -102,7 +89,6 @@ class UpdatePassword extends Component {
 }
 
 UpdatePassword.propTypes = {
-  registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired
 };

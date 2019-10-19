@@ -57,9 +57,12 @@ export const sendPasswordLink = (userData, history) => dispatch => {
 };
 
 // Update Password
-export const updatePassword = (uuid, history) => dispatch => {
+export const updatePassword = (newPassword, uuid, history) => dispatch => {
+  console.log('uuid: ',uuid);
+  console.log('newPassword: ',newPassword);
+
   axios
-    .get(`/api/users/update-password${uuid ? '?uuid=' + uuid : ''}`)
+    .get(`/api/users/update-password?uuid=${uuid}&newPassword=${newPassword}`)
     .then(res => history.push('/login'))
     .catch(err =>
       dispatch({

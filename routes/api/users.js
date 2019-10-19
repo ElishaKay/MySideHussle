@@ -162,7 +162,7 @@ router.post('/send-password-link', (req, res) => {
             var emailTemplate = require('../../emails/reset_password.js')(
                 name,
                 password,
-                baseURL
+                keys.baseURL
                 );
 
             console.log('')
@@ -212,11 +212,18 @@ router.get('/update-password', (req, res) => {
   // if (!isValid) {
   //   return res.status(400).json(errors);
   // }
+  console.log('ran update password route');
 
-  // get page from query params or default to first page
-  const userID = parseInt(req.query.uuid) || 1;
+  // get password from uuid params or default to first page
+  const uuid = req.query.uuid || 'couldnt find uuid';
+  const newPassword = req.query.newPassword || 'couldnt find newPassword';
 
-  User.findOne({ email: req.body.email }).then(user => {
+  console.log('uuid',uuid);
+  console.log('newPassword',newPassword)
+
+  User.findOne({ password: uuid }).then(user => {
+    console.log('user:', user)
+
     if (user) {
       errors.email = 'Email already exists';
       return res.status(400).json(errors);

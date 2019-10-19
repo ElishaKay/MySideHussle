@@ -32,7 +32,11 @@ module.exports = {
 };
 ```
 
+Pagination:
 https://jasonwatmore.com/post/2019/07/18/react-node-server-side-pagination-tutorial-example
+
+Reset Password Email Template:
+https://codepen.io/diwesh87/pres/ZOxzzA
 
 ### License
 
