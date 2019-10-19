@@ -148,18 +148,17 @@ router.post('/send-password-link', (req, res) => {
       // get the guys name from the db's response and send him a nicely formatted linkdein-style email here
 
         let {name, email} = user;
+        name = name.split(' ')[0];
         let subject = 'heyo';
         let message = 'whadup';
 
         function sendGrid(sendTo){
             var helper = require('sendgrid').mail;
-            var from = new helper.Email('support@ampitup.io');
+            var from = new helper.Email('storks@mysidehussle.com');
             var to = new helper.Email(sendTo);
-            var emailTitle = 'got your message. cool';
-            var emailTemplate = require('../../emails/email_template.js')(
-                name,
-                subject,
-                message
+            var emailTitle = `${name} 🤗 - attaching your password-reset link here`;
+            var emailTemplate = require('../../emails/reset_password.js')(
+                name
                 );
 
             console.log('')
@@ -182,7 +181,7 @@ router.post('/send-password-link', (req, res) => {
         sendGrid(email);
 
         //send to admin
-        sendGrid('kramer1346@gmail.com');        
+        // sendGrid('kramer1346@gmail.com');        
       
 
     } else {
@@ -236,7 +235,7 @@ router.get('/update-password', (req, res) => {
             profile => {console.log('relevant experience saved')}
         );  
       
-      }})}); 
+}})}); 
 
 
 
