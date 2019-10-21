@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const keys = require('../../config/keys');
 const passport = require('passport');
 const sg = require('sendgrid')(keys.SENDGRID_API_KEY);
+const nodemailer = require('nodemailer');
 
 // Load Input Validation
 const validateRegisterInput = require('../../validation/register');
@@ -13,6 +14,10 @@ const validateLoginInput = require('../../validation/login');
 
 // Load User model
 const User = require('../../models/User');
+
+// Load Message model
+const Message = require('../../models/Message');
+
 
 // @route   GET api/users/test
 // @desc    Tests users route
@@ -143,46 +148,99 @@ router.post('/send-password-link', (req, res) => {
     if (user) {
       console.log('user coming back from db call:',user);
 
-      res.json({success: true})
-    
-      // get the guys name from the db's response and send him a nicely formatted linkdein-style email here
+       let {id, name, email, password} = user;
+       let subject = 'Password Reset Request';
 
-        let {name, email, password} = user;
-        name = name.split(' ')[0]; 
-        let subject = 'heyo';
-        let message = 'whadup';
-        let uuid = password;
-        let baseURL = 'https://mysidehussle.herokuapp.com';
-
-        function sendGrid(sendTo){
-            var helper = require('sendgrid').mail;
-            var from = new helper.Email('storks@mysidehussle.com');
-            var to = new helper.Email(sendTo);
-            var emailTitle = `${name} 🤗 - attaching your password-reset link here`;
-            var emailTemplate = require('../../emails/reset_password.js')(
+       const output = require('../../emails/reset_password.js')(
                 name,
                 password,
                 keys.baseURL
                 );
 
-            console.log('')
-            var content = new helper.Content(
-                    "text/html", emailTemplate);
-            var mail = new helper.Mail(from, emailTitle, to, content);
+      // create reusable transporter object using the default SMTP transport
+      let transporter = nodemailer.createTransport({
+        host: keys.mailHost,
+        port: 465,
+        auth: {
+            user: keys.mailUser, // generated ethereal user
+            pass: keys.mailPass  // generated ethereal password
+        },
+        secure: true
+      });
 
-            var request = sg.emptyRequest({
-              method: 'POST',
-              path: '/v3/mail/send',
-              body: mail.toJSON(),
-            });
+      // setup email data with unicode symbols
+      let mailOptions = {
+          from: '"MySideHussle Support" <Support@MySideHussle.com>', // sender address
+          to: email, // list of receivers
+          subject: subject, // Subject line
+          text: 'Hello world?', // plain text body
+          html: output // html body
+      };
 
-            sg.API(request, function(error, response) {
-              console.log('response from sendGrid:', response);
-            });
+      // send mail with defined transport object
+      transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+              return console.log(error);
+          }
+          console.log('Message sent: %s', info.messageId);   
+          console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+      });
+
+      const newMessage = new Message({
+        subject: subject,
+        content: 'reset password link available here',
+        sent_to_id: id,
+        sent_to_details: {
+          name,
+          email
         }
+      });
 
-        //send to client
-        sendGrid(email);
+      newMessage.save().then(message => { console.log(message)
+          res.json({success: true})
+      });
+
+      // res.json({success: true})
+    
+      // get the guys name from the db's response and send him a nicely formatted linkdein-style email here
+
+        // let {name, email, password} = user;
+        // name = name.split(' ')[0]; 
+        // let subject = 'heyo';
+        // let message = 'whadup';
+        // let uuid = password;
+        // let baseURL = 'https://mysidehussle.herokuapp.com';
+
+        // function sendGrid(sendTo){
+        //     var helper = require('sendgrid').mail;
+        //     var from = new helper.Email('storks@mysidehussle.com');
+        //     var to = new helper.Email(sendTo);
+        //     var emailTitle = `${name} 🤗 - attaching your password-reset link here`;
+        //     var emailTemplate = require('../../emails/reset_password.js')(
+        //         name,
+        //         password,
+        //         keys.baseURL
+        //         );
+
+        //     console.log('')
+        //     var content = new helper.Content(
+        //             "text/html", emailTemplate);
+        //     var mail = new helper.Mail(from, emailTitle, to, content);
+
+        //     var request = sg.emptyRequest({
+        //       method: 'POST',
+        //       path: '/v3/mail/send',
+        //       body: mail.toJSON(),
+        //     });
+
+        //     sg.API(request, function(error, response) {
+        //       console.log('response from sendGrid:', response);
+        //     });
+        // }
+
+        // //send to client
+        // sendGrid(email);
 
         //send to admin
         // sendGrid('kramer1346@gmail.com');        

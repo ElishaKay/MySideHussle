@@ -38,6 +38,9 @@ https://jasonwatmore.com/post/2019/07/18/react-node-server-side-pagination-tutor
 Reset Password Email Template:
 https://codepen.io/diwesh87/pres/ZOxzzA
 
+Email Setup for support@mysidehussle.com (cPanel and Gmail):
+https://www.youtube.com/watch?v=w1rSWHciaSo
+
 ### License
 
 This project is licensed under the MIT License
